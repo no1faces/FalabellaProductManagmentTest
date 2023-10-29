@@ -83,10 +83,48 @@ func productBySku(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, product)
 }
 
+func updateProduct(c *gin.Context) {
+	sku, ok := c.GetQuery("sku")
+	var updatedProduct entity.Product
+
+	if ok == false {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "missing sku query parameter"})
+		return
+	}
+
+	if err := c.BindJSON(&updatedProduct); err != nil {
+		return
+	}
+
+	if err := utils.CheckProductProperties(updatedProduct); err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	sku = strings.ToUpper(sku)
+	product, err := getProductBySku(sku)
+
+	if err != nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "product not found"})
+		return
+	}
+
+	product.SKU = updatedProduct.SKU
+	product.Name = updatedProduct.Name
+	product.Brand = updatedProduct.Brand
+	product.Size = updatedProduct.Size
+	product.Price = updatedProduct.Price
+	product.PrincipalImage = updatedProduct.PrincipalImage
+	product.OtherImages = updatedProduct.OtherImages
+
+	c.IndentedJSON(http.StatusOK, product)
+}
+
 func main() {
 	router := gin.Default()
 	router.GET("/products", getProducts)
 	router.POST("/products", createProduct)
 	router.GET("/products/:sku", productBySku)
+	router.PATCH("/product", updateProduct)
 	router.Run("localhost:8080")
 }
