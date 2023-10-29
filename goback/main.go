@@ -1,12 +1,13 @@
 package main
 
 import (
+	"errors"
 	"example/falabellaTest/entity"
 	"example/falabellaTest/utils"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
-	//"errors"
 )
 
 var products = []entity.Product{
@@ -39,14 +40,6 @@ var products = []entity.Product{
 	},
 }
 
-/*func getProductBySku(sku string) (*product, error) {
-	for i, p := range products {
-		if p.SKU == sku {
-			return &products[i] , nil
-		}
-	}
-}*/
-
 func getProducts(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, products)
 }
@@ -69,9 +62,31 @@ func createProduct(c *gin.Context) {
 	c.IndentedJSON(http.StatusCreated, newProduct)
 }
 
+func getProductBySku(sku string) (*entity.Product, error) {
+	for i, p := range products {
+		if p.SKU == sku {
+			return &products[i], nil
+		}
+	}
+	return nil, errors.New("product not found")
+}
+
+func productBySku(c *gin.Context) {
+	sku := strings.ToUpper(c.Param("sku"))
+	product, err := getProductBySku(sku)
+
+	if err != nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "product not found"})
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, product)
+}
+
 func main() {
 	router := gin.Default()
 	router.GET("/products", getProducts)
 	router.POST("/products", createProduct)
+	router.GET("/products/:sku", productBySku)
 	router.Run("localhost:8080")
 }
