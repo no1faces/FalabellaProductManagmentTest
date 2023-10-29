@@ -120,11 +120,36 @@ func updateProduct(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, product)
 }
 
+func deleteProduct(c *gin.Context) {
+	sku, ok := c.GetQuery("sku")
+	if ok == false {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "missing sku query parameter"})
+		return
+	}
+	sku = strings.ToUpper(sku)
+	index := -1
+	for i, p := range products {
+		if p.SKU == sku {
+			index = i
+			break
+		}
+	}
+
+	if index == -1 {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "product not found"})
+		return
+	}
+
+	products = append(products[:index], products[index+1:]...)
+	c.IndentedJSON(http.StatusOK, gin.H{"message": "product deleted"})
+}
+
 func main() {
 	router := gin.Default()
 	router.GET("/products", getProducts)
 	router.POST("/products", createProduct)
 	router.GET("/products/:sku", productBySku)
 	router.PATCH("/product", updateProduct)
+	router.DELETE("/product", deleteProduct)
 	router.Run("localhost:8080")
 }
