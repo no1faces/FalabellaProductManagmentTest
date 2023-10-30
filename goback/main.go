@@ -17,7 +17,7 @@ var products = []entity.Product{
 		Brand:          "NEW-BALANCE",
 		Size:           func() *string { v := "37"; return &v }(),
 		Price:          42990.00,
-		PrincipalImage: "https://falabella.scene7.com/is/im-age/Falabella/8406270_1",
+		PrincipalImage: "https://falabella.scene7.com/is/image/Falabella/8406270_1",
 	},
 	{
 		SKU:            "FAL-881952283",
@@ -25,18 +25,18 @@ var products = []entity.Product{
 		Brand:          "JEEP",
 		Size:           func() *string { v := "ST"; return &v }(),
 		Price:          399990.00,
-		PrincipalImage: "https://falabe-lla.scene7.com/is/image/Falabe-lla/881952283_1",
+		PrincipalImage: "https://falabella.scene7.com/is/image/Falabella/881952283_1",
 		OtherImages: []string{
-			"https://falabe-lla.scene7.com/is/image/Falabe-lla/881952283_2",
+			"https://falabella.scene7.com/is/image/Falabella/881952283_2",
 		},
 	},
 	{
 		SKU:            "FAL-881898502",
 		Name:           "Camisa Manga Corta Hombre",
 		Brand:          "BASEMENT",
-		Size:           func() *string { v := "ST"; return &v }(),
+		Size:           func() *string { v := "M"; return &v }(),
 		Price:          24990.00,
-		PrincipalImage: "https://falabella.scene7.com/is/im-age/Falabella/881898502_1",
+		PrincipalImage: "https://falabella.scene7.com/is/image/Falabella/881898502_1",
 	},
 }
 
