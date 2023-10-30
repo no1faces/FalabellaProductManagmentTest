@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -146,6 +147,7 @@ func deleteProduct(c *gin.Context) {
 
 func main() {
 	router := gin.Default()
+	router.Use(cors.Default())
 	router.GET("/products", getProducts)
 	router.POST("/products", createProduct)
 	router.GET("/products/:sku", productBySku)
