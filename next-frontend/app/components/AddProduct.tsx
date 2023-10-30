@@ -1,6 +1,6 @@
 "use client"
 import {AiOutlinePlus} from "react-icons/ai"
-import Modal from "./Modal"
+import Modal from "./Commons/Modal"
 import { FormEventHandler, useState } from "react"
 import InputText from "./Commons/InputText"
 import { addProduct } from "@/api"
@@ -16,13 +16,17 @@ export const AddProduct = () => {
     const [size, setSize] = useState<string>("");
     const [principalImage, setPrincipalImage] = useState<string>("");
 
-    const handleCloseModal = () => {
+    const cleanProductStates = () => {
         setSku("");
         setName("");
         setBrand("");
         setPrice("");
         setSize("");
         setPrincipalImage("");
+    }
+
+    const handleCloseModal = () => {
+        cleanProductStates();
         setModalOpen(false);
 
     }
@@ -38,19 +42,14 @@ export const AddProduct = () => {
             principalImage: principalImage,
             otherImages: []
         });
-        setSku("");
-        setName("");
-        setBrand("");
-        setPrice("");
-        setSize("");
-        setPrincipalImage("");
+        cleanProductStates();
         setModalOpen(false);
         router.refresh();
     }
 
     return (
         <div>
-            <button className="btn btn-primary w-full" onClick={() => setModalOpen(true)}>
+            <button className="btn btn-primary w-1/2" onClick={() => setModalOpen(true)}>
                 Add new product <AiOutlinePlus size={18}/>
             </button>
             <Modal modalOpen={modalOpen} handleCloseModal={handleCloseModal}>

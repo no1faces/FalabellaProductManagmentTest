@@ -19,3 +19,15 @@ export const addProduct = async (product: IProduct): Promise<IProduct> => {
     const newProduct = await res.json();
     return newProduct;
 }
+
+export const editProduct = async (sku: string, product: IProduct): Promise<IProduct> => {
+    const res = await fetch(`${baseUrl}/product?sku=${sku}`,{
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(product)
+    });
+    const editedProduct = await res.json();
+    return editedProduct;
+}
