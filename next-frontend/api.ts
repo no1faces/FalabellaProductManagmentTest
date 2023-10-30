@@ -31,3 +31,7 @@ export const editProduct = async (sku: string, product: IProduct): Promise<IProd
     const editedProduct = await res.json();
     return editedProduct;
 }
+
+export const deleteProduct = async (sku: string): Promise<void> => {
+    await fetch(`${baseUrl}/product?sku=${sku}`,{method: 'DELETE'});
+}

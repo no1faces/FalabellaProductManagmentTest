@@ -5,7 +5,7 @@ import {FiTrash2} from "react-icons/fi"
 import Modal from "./Commons/Modal"
 import { FormEventHandler, useState } from "react"
 import InputText from "./Commons/InputText"
-import { editProduct } from "@/api"
+import { deleteProduct, editProduct } from "@/api"
 import { useRouter } from "next/navigation"
 
 interface ProductBoxProps {
@@ -14,7 +14,8 @@ interface ProductBoxProps {
 
 export const ProductBox: React.FC<ProductBoxProps> = ({ product }) => {
     const router = useRouter();
-    const [modalEditOpen, setModalEditOpen] = useState(false);
+    const [modalEditOpen, setModalEditOpen] = useState<boolean>(false);
+    const [modalDeleteOpen, setModalDeleteOpen] = useState<boolean>(false);
     const [sku, setSku] = useState<string>(product.sku);
     const [name, setName] = useState<string>(product.name);
     const [brand, setBrand] = useState<string>(product.brand);
@@ -24,7 +25,17 @@ export const ProductBox: React.FC<ProductBoxProps> = ({ product }) => {
     const [otherImages,] = useState<string[]>(product.otherImages)
 
     const handleCloseEditModal = () => {
-        setModalEditOpen(false)
+        setSku(product.sku);
+        setName(product.name);
+        setBrand(product.brand);
+        setPrice(String(product.price));
+        setSize(product.size);
+        setPrincipalImage(product.principalImage);
+        setModalEditOpen(false);
+    }
+
+    const handleCloseDeleteModal = () => {
+        setModalDeleteOpen(false)
     }
 
     const handleSubmitEditProduct: FormEventHandler<HTMLFormElement> = async (e) => {
@@ -42,6 +53,12 @@ export const ProductBox: React.FC<ProductBoxProps> = ({ product }) => {
         router.refresh();
     }
 
+    const handleDeleteProduct = async (delSku: string) => {
+        await deleteProduct(delSku);
+        setModalDeleteOpen(false);
+        router.refresh();
+    }
+
     return (
         <div className="flex justify-center">
             <div className="card card-compact w-96 bg-base-100 shadow-xl">
@@ -49,9 +66,15 @@ export const ProductBox: React.FC<ProductBoxProps> = ({ product }) => {
                     <img src={product.principalImage} />
                 </figure>
                 <div className="card-body">
-                    <h2 className="card-title">{product.name}</h2>
-                    <p>{product.brand}    |    Size: {product.size}</p>
-                    <p>${product.price}</p>
+                    <h2 className="card-title">
+                        {product.name}
+                    </h2>
+                    <p>
+                        {product.brand}    |    Size: {product.size}
+                    </p>
+                    <p>
+                        ${product.price}
+                    </p>
                     <div className="card-actions justify-end">
                         <button className="btn btn-ghost" onClick={()=>setModalEditOpen(true)}>
                             <BiEdit className="text-blue-500" size={25}/>
@@ -70,9 +93,19 @@ export const ProductBox: React.FC<ProductBoxProps> = ({ product }) => {
                                 </button>
                             </form>
                         </Modal>
-                        <button className="btn btn-ghost">
+                        <button className="btn btn-ghost" onClick={()=>setModalDeleteOpen(true)}>
                             <FiTrash2 className="text-red-500" size={25}/>
                         </button>
+                        <Modal modalOpen={modalDeleteOpen} handleCloseModal={handleCloseDeleteModal}>
+                            <h3 className="text-lg">
+                                Are you sure, you want to delete this product?
+                            </h3>
+                            <div className="modal-action">
+                                <button onClick={()=>handleDeleteProduct(product.sku)} className="btn">
+                                    Yes
+                                </button>
+                            </div>
+                        </Modal>
                     </div>
                 </div>
             </div>
