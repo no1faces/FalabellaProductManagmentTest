@@ -81,7 +81,7 @@ export const ProductBox: React.FC<ProductBoxProps> = ({ product }) => {
                         </button>
                         <Modal modalOpen={modalEditOpen} handleCloseModal={handleCloseEditModal}>
                             <form onSubmit={handleSubmitEditProduct}>
-                                <h3 className="font-bold text-lg">Add new product</h3>
+                                <h3 className="font-bold text-lg">Edit product</h3>
                                 <InputText label={"SKU: "} value={sku} setValue={setSku}/>
                                 <InputText label={"Name: "} value={name} setValue={setName}/>
                                 <InputText label={"Brand: "} value={brand} setValue={setBrand}/>
