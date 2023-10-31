@@ -21,7 +21,7 @@ var products = []entity.Product{
 		PrincipalImage: "https://falabella.scene7.com/is/image/Falabella/8406270_1",
 	},
 	{
-		SKU:            "FAL-881952283",
+		SKU:            "FAL-88195228",
 		Name:           "Bicicleta Bal-toro Aro 29",
 		Brand:          "JEEP",
 		Size:           func() *string { v := "ST"; return &v }(),
@@ -32,7 +32,7 @@ var products = []entity.Product{
 		},
 	},
 	{
-		SKU:            "FAL-881898502",
+		SKU:            "FAL-88189850",
 		Name:           "Camisa Manga Corta Hombre",
 		Brand:          "BASEMENT",
 		Size:           func() *string { v := "M"; return &v }(),
